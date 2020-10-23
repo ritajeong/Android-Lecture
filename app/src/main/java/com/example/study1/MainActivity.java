@@ -1,7 +1,9 @@
 package com.example.study1;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,24 +11,27 @@ import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
 
-
-    EditText et_id;
-    Button btn_test;
+    private Button btn_move;
+    private EditText et_test;
+    private String str;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        et_id = findViewById(R.id.et_id);
-        btn_test = findViewById(R.id.btn_test);
-
-        btn_test.setOnClickListener(new View.OnClickListener() { //Alt Enter로 implement methods
+        et_test = findViewById(R.id.et_test);
+        btn_move=findViewById(R.id.btn_move);
+        btn_move.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                et_id.setText("app study2"); //버튼을 클릭했을 때 텍스트박스에 텍스트가 뜨게 함
+                str = et_test.getText().toString(); //EditText 입력폼에서 받아온 텍스트가 Sub화면에 출력됨
+                Intent intent = new Intent(MainActivity.this , SubActivity.class ); //첫번째 인자는 현재 액티비티, 두번째는 이동하고 싶은 액티비
+                intent.putExtra("str", str);
+                startActivity(intent); //액티비티 이동
+
+
             }
         });
-
     }
 }
