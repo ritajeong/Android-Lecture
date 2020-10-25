@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
@@ -18,11 +19,20 @@ public class MainActivity extends AppCompatActivity {
     private EditText et_test;
     private String str;
     ImageView test;
+    //SharedPreferences
+    EditText et_save;
+    String shared = "file";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        et_save = (EditText) findViewById(R.id.et_save);
+        //SharePreferences
+        SharedPreferences sharedPreferences = getSharedPreferences(shared, 0);
+        String value = sharedPreferences.getString("savedValue","");
+        et_save.setText(value);
 
         et_test = findViewById(R.id.et_test);
         btn_move=findViewById(R.id.btn_move);
@@ -46,4 +56,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //이 액티비티를 벗어날 때 액티비티가 파괴됨. 그 때 호출되는 함수
+    //SharedPreferences로 저장시키면서 나갈 수 있게 함
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        SharedPreferences sharedPreferences = getSharedPreferences(shared, 0);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        //SharePreferences안에 에디터를 연결함
+        String value = et_save.getText().toString(); //getText는 현재 써져있는 값을 받아와서 스트링으로 씀
+        editor.putString("savedValue", value);
+        editor.commit();
+    }
 }
